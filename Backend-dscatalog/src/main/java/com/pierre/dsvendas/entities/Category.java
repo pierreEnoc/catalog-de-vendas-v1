@@ -6,7 +6,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "tb_categoria")
-public class Categoria implements Serializable {
+public class Category implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -15,11 +15,11 @@ public class Categoria implements Serializable {
 
     private String name;
 
-    public Categoria() {
+    public Category() {
 
     }
 
-    public Categoria(Long id, String name) {
+    public Category(Long id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -43,9 +43,9 @@ public class Categoria implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Categoria)) return false;
-        Categoria categoria = (Categoria) o;
-        return getId().equals(categoria.getId());
+        if (!(o instanceof Category)) return false;
+        Category category = (Category) o;
+        return getId().equals(category.getId());
     }
 
     @Override
