@@ -1,9 +1,9 @@
 package com.pierre.dsvendas.entities.services.exception;
 
-public class EntityNotFoundException extends RuntimeException {
+public class ResourceFoundException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
-    public EntityNotFoundException(String msg) {
+    public ResourceFoundException(String msg) {
         super(msg);
     }
 }
