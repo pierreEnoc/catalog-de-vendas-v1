@@ -2,9 +2,12 @@ package com.pierre.dsvendas.entities.services;
 
 import com.pierre.dsvendas.dto.CategoryDTO;
 import com.pierre.dsvendas.entities.Category;
+import com.pierre.dsvendas.entities.services.exception.DatabaseException;
 import com.pierre.dsvendas.entities.services.exception.ResourceFoundException;
 import com.pierre.dsvendas.repositories.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -52,4 +55,15 @@ public class CategoryService {
       }
     }
 
+    public void delete(Long id) {
+        try {
+            categoryRepository.deleteById(id);
+        }
+        catch (EmptyResultDataAccessException e) {
+            throw new ResourceFoundException("Id not found " + id);
+        }
+        catch (DataIntegrityViolationException e) {
+            throw new DatabaseException("Integrity violation");
+        }
+    }
 }
