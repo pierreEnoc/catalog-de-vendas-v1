@@ -31,7 +31,7 @@ public class ResourceExceptionHandler {
         StandarError err = new StandarError();
         err.setTimestamp(Instant.now());
         err.setStatus(status.value());
-        err.setError("Resource not found");
+        err.setError("Database exception");
         err.setMessage(e.getMessage());
         err.setPath(request.getRequestURI());
         return ResponseEntity.status(status).body(err);
