@@ -33,6 +33,7 @@ public class Category implements Serializable {
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant updatedAt;
     
+	@ManyToMany(mappedBy = "categories")
     private Set<Product> products = new HashSet<>(); 
 
     public Category() {
@@ -79,7 +80,6 @@ public class Category implements Serializable {
 		updatedAt = Instant.now();
 	}
 	
-	@ManyToMany(mappedBy = "categories")
 	public Set<Product> getProducts() {
 		return products;
 	}
