@@ -1,117 +1,84 @@
-package com.pierre.dsvendas.entities;
+package com.pierre.dsvendas.dto;
 
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import com.pierre.dsvendas.entities.User;
 
-@Entity
-@Table(name = "tb_user")
-public class User implements Serializable {
+public class UserDTO implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String firstName;
 	private String lastName;
-	
-	@Column(unique = true)
 	private String email;
-	private String password;
 	
-	//ja vem com os perfils
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "tb_user_role",
-			joinColumns = @JoinColumn(name = "user_id"),
-			inverseJoinColumns = @JoinColumn(name = "role_id"))
-	private Set<Role> roles = new HashSet<>();
+	Set<RoleDTO> roles = new HashSet<>();
 	
-	
-	public User() {
+	public UserDTO() {
 		
 	}
 
-
-	public User(Long id, String firstName, String lastName, String email, String password) {
+	public UserDTO(Long id, String firstName, String lastName, String email) {
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
-		this.password = password;
+		
 	}
+	
+	public UserDTO(User entity) {
+		id = entity.getId();
+		firstName = entity.getFirstName();
+		lastName = entity.getLastName();
+		email = entity.getEmail();
+		entity.getRoles().forEach(role -> this.roles.add(new RoleDTO(role)));
+	}
+
+
 
 
 	public Long getId() {
 		return id;
 	}
 
-
 	public void setId(Long id) {
 		this.id = id;
 	}
-
 
 	public String getFirstName() {
 		return firstName;
 	}
 
-
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
-
 
 	public String getLastName() {
 		return lastName;
 	}
 
-
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-
 
 	public String getEmail() {
 		return email;
 	}
 
-
 	public void setEmail(String email) {
 		this.email = email;
 	}
 
-
-	public String getPassword() {
-		return password;
-	}
-
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-
-	public Set<Role> getRoles() {
+	public Set<RoleDTO> getRoles() {
 		return roles;
 	}
 
-
-	public void setRoles(Set<Role> roles) {
+	public void setRoles(Set<RoleDTO> roles) {
 		this.roles = roles;
 	}
-
 
 	@Override
 	public int hashCode() {
@@ -121,7 +88,6 @@ public class User implements Serializable {
 		return result;
 	}
 
-
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -130,7 +96,7 @@ public class User implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		User other = (User) obj;
+		UserDTO other = (UserDTO) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -139,11 +105,10 @@ public class User implements Serializable {
 		return true;
 	}
 
-
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
-				+ ", password=" + password + "]";
+		return "UserDTO [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
+				+  "]";
 	}
-	
+
 }
