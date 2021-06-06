@@ -1,5 +1,8 @@
 package com.pierre.dsvendas.dto;
 
+import com.pierre.dsvendas.entities.services.validation.UserInsertValid;
+
+@UserInsertValid
 public class UserInsertDTO extends UserDTO {
 	
 	private static final long serialVersionUID = 1L;
@@ -13,6 +16,9 @@ public class UserInsertDTO extends UserDTO {
 	public String getPassword() {
 		return password;
 	}
-		
+
+	public void setPassword(String password) {
+		this.password = password;
+	}	
 
 }
