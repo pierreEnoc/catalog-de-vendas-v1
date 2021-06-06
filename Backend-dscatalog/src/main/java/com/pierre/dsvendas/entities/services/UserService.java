@@ -18,6 +18,7 @@ import com.pierre.dsvendas.dto.CategoryDTO;
 import com.pierre.dsvendas.dto.RoleDTO;
 import com.pierre.dsvendas.dto.UserDTO;
 import com.pierre.dsvendas.dto.UserInsertDTO;
+import com.pierre.dsvendas.dto.UserUpdateDTO;
 import com.pierre.dsvendas.entities.Category;
 import com.pierre.dsvendas.entities.Role;
 import com.pierre.dsvendas.entities.User;
@@ -60,7 +61,7 @@ public class UserService {
 		return new UserDTO(entity);
 	}
     @Transactional
-	public UserDTO update(Long id, UserDTO dto) {
+	public UserDTO update(Long id, UserUpdateDTO dto) {
 		try {
 			User entity = userRepository.getOne(id);
 		    copyDtoToEntity(dto, entity);
