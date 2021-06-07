@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.pierre.dsvendas.dto.CategoryDTO;
 import com.pierre.dsvendas.dto.ProductDTO;
 import com.pierre.dsvendas.entities.services.ProductService;
 
@@ -41,6 +42,15 @@ public class ProductResources {
 		return ResponseEntity.ok().body(list);
 	}
 	
+	/*
+	@GetMapping(value = "/{id}")
+	public ResponseEntity<ProductDTO> findById(@PathVariable Long id) {
+		ProductDTO dto = productService.findById(id);
+		return ResponseEntity.ok().body(dto);
+	}
+	*/
+	
+
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<ProductDTO> findById(@PathVariable Long id) {
 		ProductDTO dto = productService.findById(id);

@@ -40,9 +40,27 @@ public class ProductService {
 	public ProductDTO findById(Long id) {
 		Optional<Product> obj = productRepository.findById(id);
 		Product entity = obj.orElseThrow(() -> new ResourceFoundException("Entity not found"));
+
 		return new ProductDTO(entity, entity.getCategories());
 	}
 	
+	/*
+	
+	@Transactional(readOnly = true)
+	public ProductDTO findById(Long id) {
+		Optional<Product> obj = productRepository.findById(id);
+		Product entity = obj.orElseThrow(() -> new ResourceFoundException("Entity not found"));
+		return new ProductDTO(entity, entity.getCategories());
+	}
+	*/
+	  /*
+     *   @Transactional(readOnly = true)
+    public CategoryDTO findById(Long id) {
+        Optional<Category> obj = categoryRepository.findById(id);
+        Category entity = obj.orElseThrow(() -> new ResourceFoundException("Entity not found"));
+        return new CategoryDTO(entity);
+    }
+     * */
 	
 	@Transactional(readOnly = true)
 	public ProductDTO insert(ProductDTO dto) {

@@ -36,7 +36,7 @@ public class CategoryService {
         Category entity = obj.orElseThrow(() -> new ResourceFoundException("Entity not found"));
         return new CategoryDTO(entity);
     }
-
+  
     @Transactional(readOnly = true)
     public CategoryDTO insert(CategoryDTO dto) {
         Category entity = new Category();
