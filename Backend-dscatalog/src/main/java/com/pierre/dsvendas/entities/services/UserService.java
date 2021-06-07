@@ -14,12 +14,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import com.pierre.dsvendas.dto.CategoryDTO;
 import com.pierre.dsvendas.dto.RoleDTO;
 import com.pierre.dsvendas.dto.UserDTO;
 import com.pierre.dsvendas.dto.UserInsertDTO;
 import com.pierre.dsvendas.dto.UserUpdateDTO;
-import com.pierre.dsvendas.entities.Category;
 import com.pierre.dsvendas.entities.Role;
 import com.pierre.dsvendas.entities.User;
 import com.pierre.dsvendas.entities.services.exception.DatabaseException;
