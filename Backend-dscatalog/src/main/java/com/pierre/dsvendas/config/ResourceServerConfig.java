@@ -56,9 +56,10 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 		.antMatchers(ADMIN).hasRole("ADMIN")
 		.anyRequest().authenticated();	
 		
-		http.cors().configurationSource(corsConfigurationSource());
+		//http.cors().configurationSource(corsConfigurationSource());
 	}
 	
+	/*
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration corsConfig = new CorsConfiguration();
@@ -79,5 +80,5 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 		bean.setOrder(Ordered.HIGHEST_PRECEDENCE);
 		return bean;
 	}
-
+ */
 }
