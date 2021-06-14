@@ -37,9 +37,9 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
 		
-		if (Arrays.asList( env.getActiveProfiles()).contains("test")) {
-			http.headers().frameOptions().disable();
-		}
+		//if (Arrays.asList( env.getActiveProfiles()).contains("test")) {
+		//	http.headers().frameOptions().disable();
+		//}
 		
 		http.authorizeRequests()
 		.antMatchers(PUBLIC).permitAll()
@@ -47,7 +47,6 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 		.antMatchers(OPERATRO_OR_ADMIN).hasAnyRole("OPERATOR", "ADMIN")
 		.antMatchers(ADMIN).hasRole("ADMIN")
 		.anyRequest().authenticated();	
-		
 	}
 	
 }
