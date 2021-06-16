@@ -1,9 +1,10 @@
 package com.pierre.dsvendas.entities.services;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
-import org.springframework.transaction.annotation.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -11,6 +12,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.pierre.dsvendas.dto.CategoryDTO;
 import com.pierre.dsvendas.dto.ProductDTO;
@@ -32,8 +34,8 @@ public class ProductService {
 	
 	@Transactional(readOnly= true)
 	public Page< ProductDTO> findAllPaged(Long categoryId, String name, PageRequest pageRequest) {
-		Category category = (categoryId == 0) ? null : categoryRepository.getOne(categoryId);
-		Page<Product> list = productRepository.find(category, name, pageRequest);
+		List<Category> categories = (categoryId == 0) ? null : Arrays.asList(categoryRepository.getOne(categoryId));
+		Page<Product> list = productRepository.find(categories, name, pageRequest);
 		return list.map(x -> new ProductDTO(x));
 	}
 	

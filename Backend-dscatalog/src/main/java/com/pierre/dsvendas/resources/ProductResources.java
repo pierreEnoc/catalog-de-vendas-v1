@@ -41,7 +41,7 @@ public class ProductResources {
 			@RequestParam(value = "direction", defaultValue = "ASC") String direction) {
 		
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
-		Page<ProductDTO> list = productService.findAllPaged(categoryId, name, pageRequest);
+		Page<ProductDTO> list = productService.findAllPaged(categoryId, name.trim(), pageRequest);
 		return ResponseEntity.ok().body(list);
 	}
 	
