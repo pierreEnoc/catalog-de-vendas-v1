@@ -1,27 +1,30 @@
 package com.pierre.dsvendas.test.servicetest;
 
 import com.amazonaws.services.workmailmessageflow.model.ResourceNotFoundException;
+import com.pierre.dsvendas.dto.ProductDTO;
 import com.pierre.dsvendas.entities.Product;
 import com.pierre.dsvendas.entities.services.ProductService;
 import com.pierre.dsvendas.entities.services.exception.DatabaseException;
-import com.pierre.dsvendas.entities.services.exception.ResourceFoundException;
 import com.pierre.dsvendas.repositories.ProductRepository;
 import com.pierre.dsvendas.test.factory.ProductFactory;
-import org.apache.catalina.LifecycleState;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
 import java.util.Optional;
 
 @ExtendWith(SpringExtension.class)
+//@SpringBootTest
 public class ProductServiceTest {
 
     @InjectMocks
@@ -82,5 +85,23 @@ public class ProductServiceTest {
         Mockito.verify(repository, Mockito.times(1)).deleteById(dependentId);
     }
 
-    //DataIntegrityViolationException
+    @Test
+    public void findAllPageShouldReturnPage() {
+        Long categoryId = 0L;
+        String name = "";
+        PageRequest pageRequest = PageRequest.of(0, 10);
+
+        Page<ProductDTO> result = service.findAllPaged(categoryId, name, pageRequest);
+        Assertions.assertNotNull(result);
+        Assertions.assertFalse(result.isEmpty());
+        Mockito.verify(repository, Mockito.times(1)).find(null, name, pageRequest);
+    }
+
+    @Test
+    public void findByIdShouldReturnProductDTOWhenIdExists() {
+        ProductDTO result = service.findById(existingId);
+        Assertions.assertNotNull(result);
+    }
+
+
 }
