@@ -21,6 +21,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -56,6 +57,9 @@ public class ProductServiceTest {
 
         Mockito.when(repository.findById(existingId)).thenReturn(Optional.of(product));
         Mockito.when(repository.findById(nonExistingId)).thenReturn(Optional.empty());
+
+        Mockito.when(repository.getOne(existingId)).thenReturn(product);
+        Mockito.doThrow(EntityNotFoundException.class).when(repository).getOne(nonExistingId);
 
         Mockito.doNothing().when(repository).deleteById(existingId);
         Mockito.doThrow(EmptyResultDataAccessException.class).when(repository).deleteById(nonExistingId);
@@ -110,7 +114,22 @@ public class ProductServiceTest {
         Assertions.assertThrows(ResourceNotFoundException.class, () -> {
             service.findById(nonExistingId);
         });
+    }
 
+    @Test
+    public void updateShouldReturnProductDTOWhenIdExists() {
+        ProductDTO dto = new ProductDTO();
+        ProductDTO result = service.update(existingId, dto);
+        Assertions.assertNotNull(result);
+    }
+
+    @Test
+    public void updateShouldThrowResourceNotFoundExceptionWhenIdDoesNotExist() {
+
+        ProductDTO dto = new ProductDTO();
+        Assertions.assertThrows(ResourceNotFoundException.class, () -> {
+            service.update(nonExistingId, dto);
+        });
     }
 
 
