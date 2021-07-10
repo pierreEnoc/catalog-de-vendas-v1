@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
 
+import com.amazonaws.services.workmailmessageflow.model.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -51,7 +52,7 @@ public class ProductService {
 	@Transactional(readOnly = true)
 	public ProductDTO findById(Long id) {
 		Optional<Product> obj = productRepository.findById(id);
-		Product entity = obj.orElseThrow(() -> new ResourceFoundException("Entity not found"));
+		Product entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
 
 		return new ProductDTO(entity, entity.getCategories());
 	}
@@ -73,7 +74,7 @@ public class ProductService {
 			return new ProductDTO(entity);
 			
 		} catch (EntityNotFoundException e) {
-			throw new ResourceFoundException("Id not found" + id);
+			throw new ResourceNotFoundException("Id not found" + id);
 		}
 	}
 
@@ -82,7 +83,7 @@ public class ProductService {
 		try {
 			productRepository.deleteById(id);
 		} catch (EmptyResultDataAccessException e) {
-			 throw new ResourceFoundException("Id not found " + id);
+			 throw new ResourceNotFoundException("Id not found " + id);
 		}
 		catch (DataIntegrityViolationException e) {
             throw new DatabaseException("Integrity violation");
