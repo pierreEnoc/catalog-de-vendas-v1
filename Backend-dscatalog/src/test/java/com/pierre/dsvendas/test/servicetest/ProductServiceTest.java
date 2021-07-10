@@ -5,6 +5,7 @@ import com.pierre.dsvendas.dto.ProductDTO;
 import com.pierre.dsvendas.entities.Product;
 import com.pierre.dsvendas.entities.services.ProductService;
 import com.pierre.dsvendas.entities.services.exception.DatabaseException;
+import com.pierre.dsvendas.entities.services.exception.ResourceFoundException;
 import com.pierre.dsvendas.repositories.ProductRepository;
 import com.pierre.dsvendas.test.factory.ProductFactory;
 import org.junit.jupiter.api.Assertions;
@@ -101,6 +102,15 @@ public class ProductServiceTest {
     public void findByIdShouldReturnProductDTOWhenIdExists() {
         ProductDTO result = service.findById(existingId);
         Assertions.assertNotNull(result);
+    }
+
+    @Test
+    public void findByIdShouldThrowResourceNotFoundExceptionWhenIdDoesNotExist() {
+
+        Assertions.assertThrows(ResourceNotFoundException.class, () -> {
+            service.findById(nonExistingId);
+        });
+
     }
 
 
