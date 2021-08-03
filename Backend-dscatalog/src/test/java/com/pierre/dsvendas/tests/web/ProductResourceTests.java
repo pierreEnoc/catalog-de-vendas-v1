@@ -7,6 +7,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +17,14 @@ import org.springframework.boot.json.JacksonJsonParser;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 
 import com.pierre.dsvendas.dto.ProductDTO;
 import com.pierre.dsvendas.entities.services.ProductService;
@@ -46,6 +51,7 @@ public class ProductResourceTests {
 	private Long nonExistingId;
 	private ProductDTO newProductDTO;
 	private ProductDTO existingProductDTO;
+	private PageImpl<ProductDTO> page;
 
 	@BeforeEach
 	void setup() throws Exception {
@@ -55,9 +61,21 @@ public class ProductResourceTests {
 		newProductDTO = ProductFactory.createProductDTO(null);
 		existingProductDTO = ProductFactory.createProductDTO(existingId);
 		
+		page = new PageImpl<>(List.of(existingProductDTO));
+		
 		when(service.findById(existingId)).thenReturn(existingProductDTO);
 		when(service.findById(nonExistingId)).thenThrow(ResourceNotFoundException.class);
+		when(service.findAllPaged(any(), anyString(), any())).thenReturn(page);
 			
+	}
+	
+	@Test
+	public void findAllShouldReturnPage() throws Exception {
+		
+		ResultActions result =
+		mockMvc.perform(get("/products", existingId)
+				.accept(MediaType.APPLICATION_JSON));
+				result.andExpect(status().isOk());		
 	}
 	
 	@Test
