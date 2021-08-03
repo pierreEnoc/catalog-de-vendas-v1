@@ -1,3 +1,5 @@
+// service test with mockito
+
 package com.pierre.dsvendas.test.servicetest;
 
 import com.amazonaws.services.workmailmessageflow.model.ResourceNotFoundException;
@@ -22,6 +24,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.persistence.EntityNotFoundException;
+
+import static org.hamcrest.CoreMatchers.any;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -40,7 +45,8 @@ public class ProductServiceTest {
     private long dependentId;
     private Product product;
     private PageImpl<Product> page;
-
+    
+    private ProductDTO productDTO;
 
     @BeforeEach
     void setup() throws Exception {
@@ -49,10 +55,15 @@ public class ProductServiceTest {
         dependentId = 4L;
         product = ProductFactory.createProduct();
         page = new PageImpl<>(List.of(product));
+        productDTO = ProductFactory.createProductDTO();
+        
+        //productDTO = ProductFactory.createProduct();
 
         Mockito.when(repository.find(ArgumentMatchers.any(), ArgumentMatchers.anyString(), ArgumentMatchers.any()))
                 .thenReturn(page);
-
+        
+        Mockito.when(repository.findById(existingId)).thenReturn(Optional.of(product));
+        
         Mockito.when(repository.save(ArgumentMatchers.any())).thenReturn(product);
 
         Mockito.when(repository.findById(existingId)).thenReturn(Optional.of(product));
@@ -65,6 +76,7 @@ public class ProductServiceTest {
         Mockito.doThrow(EmptyResultDataAccessException.class).when(repository).deleteById(nonExistingId);
         Mockito.doThrow(DataIntegrityViolationException.class).when(repository).deleteById(dependentId);
     }
+
 
     @Test
     public void deleteShouldDoNothingWhenIdExists() {
@@ -83,7 +95,7 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void deleteShouldThrowDatabaseExceptionWhenIdDoesNotExists() {
+    public void  deleteShouldThrowDatabaseExceptionWhenIdDependentId() {
         Assertions.assertThrows(DatabaseException.class,() -> {
             service.delete(dependentId);
         });
@@ -101,19 +113,19 @@ public class ProductServiceTest {
         Assertions.assertFalse(result.isEmpty());
         Mockito.verify(repository, Mockito.times(1)).find(null, name, pageRequest);
     }
-
+    
+    
     @Test
     public void findByIdShouldReturnProductDTOWhenIdExists() {
-        ProductDTO result = service.findById(existingId);
-        Assertions.assertNotNull(result);
+    	ProductDTO resul = service.findById(existingId);
+    	Assertions.assertNotNull(resul);
     }
-
+    
     @Test
     public void findByIdShouldThrowResourceNotFoundExceptionWhenIdDoesNotExist() {
-
-        Assertions.assertThrows(ResourceNotFoundException.class, () -> {
-            service.findById(nonExistingId);
-        });
+    	Assertions.assertThrows(ResourceNotFoundException.class, () -> {
+    		service.findById(nonExistingId);
+    	});
     }
 
     @Test
