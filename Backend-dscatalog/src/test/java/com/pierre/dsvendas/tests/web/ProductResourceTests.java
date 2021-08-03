@@ -5,6 +5,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.List;
@@ -65,6 +66,7 @@ public class ProductResourceTests {
 		
 		when(service.findById(existingId)).thenReturn(existingProductDTO);
 		when(service.findById(nonExistingId)).thenThrow(ResourceNotFoundException.class);
+		
 		when(service.findAllPaged(any(), anyString(), any())).thenReturn(page);
 			
 	}
@@ -75,7 +77,9 @@ public class ProductResourceTests {
 		ResultActions result =
 		mockMvc.perform(get("/products", existingId)
 				.accept(MediaType.APPLICATION_JSON));
-				result.andExpect(status().isOk());		
+				result.andExpect(status().isOk());	
+				//verifica o conteudo do jason
+				result.andExpect(jsonPath("$.content").exists());
 	}
 	
 	@Test
@@ -84,7 +88,11 @@ public class ProductResourceTests {
 		ResultActions result =
 		mockMvc.perform(get("/products/{id}", existingId)
 				.accept(MediaType.APPLICATION_JSON));
-				result.andExpect(status().isOk());		
+				result.andExpect(status().isOk());	
+				result.andExpect(jsonPath("$.id").exists());
+				result.andExpect(jsonPath("$.id").value(existingId));
+				
+				
 	}
 	
 	@Test
@@ -93,7 +101,8 @@ public class ProductResourceTests {
 		ResultActions result =
 				mockMvc.perform(get("/products/{id}", nonExistingId)
 						.accept(MediaType.APPLICATION_JSON));
-						result.andExpect(status().isNotFound());	
+						result.andExpect(status().isNotFound());
+						
 		
 	}
 	
