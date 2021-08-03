@@ -1,22 +1,30 @@
 package com.pierre.dsvendas.tests.web;
 
+import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.json.JacksonJsonParser;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import com.pierre.dsvendas.dto.ProductDTO;
 import com.pierre.dsvendas.entities.services.ProductService;
+import com.pierre.dsvendas.entities.services.exception.ResourceNotFoundException;
+import com.pierre.dsvendas.test.factory.ProductFactory;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -33,6 +41,45 @@ public class ProductResourceTests {
 	
 	@Value("${security.oauth2.client.client-secret}")
 	private String clientSecret;
+	
+	private Long existingId;
+	private Long nonExistingId;
+	private ProductDTO newProductDTO;
+	private ProductDTO existingProductDTO;
+
+	@BeforeEach
+	void setup() throws Exception {
+		
+		existingId = 1L;
+		nonExistingId = 2L;
+		newProductDTO = ProductFactory.createProductDTO(null);
+		existingProductDTO = ProductFactory.createProductDTO(existingId);
+		
+		when(service.findById(existingId)).thenReturn(existingProductDTO);
+		when(service.findById(nonExistingId)).thenThrow(ResourceNotFoundException.class);
+			
+	}
+	
+	@Test
+	public void findByIdShouldReturnProductWhenIdExists() throws Exception {
+		
+		ResultActions result =
+		mockMvc.perform(get("/products/{id}", existingId)
+				.accept(MediaType.APPLICATION_JSON));
+				result.andExpect(status().isOk());		
+	}
+	
+	@Test
+	public void findByIdShouldReturnNotFoundWhenIdDoesNotExists() throws Exception {
+		
+		ResultActions result =
+				mockMvc.perform(get("/products/{id}", nonExistingId)
+						.accept(MediaType.APPLICATION_JSON));
+						result.andExpect(status().isNotFound());	
+		
+	}
+	
+	
 	
 	private String obtainAccessToken(String username, String password) throws Exception {
 		 

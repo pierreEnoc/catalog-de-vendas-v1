@@ -7,25 +7,22 @@ import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
 
-import com.amazonaws.services.workmailmessageflow.model.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.repository.support.Repositories;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.amazonaws.services.s3.internal.S3StringResponseHandler;
+import com.amazonaws.services.workmailmessageflow.model.ResourceNotFoundException;
 import com.pierre.dsvendas.dto.CategoryDTO;
 import com.pierre.dsvendas.dto.ProductDTO;
 import com.pierre.dsvendas.dto.UriDTO;
 import com.pierre.dsvendas.entities.Category;
 import com.pierre.dsvendas.entities.Product;
 import com.pierre.dsvendas.entities.services.exception.DatabaseException;
-import com.pierre.dsvendas.entities.services.exception.ResourceFoundException;
 import com.pierre.dsvendas.repositories.CategoryRepository;
 import com.pierre.dsvendas.repositories.ProductRepository;
 

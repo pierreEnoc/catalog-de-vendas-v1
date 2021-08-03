@@ -14,13 +14,13 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
 import com.pierre.dsvendas.entities.services.exception.DatabaseException;
-import com.pierre.dsvendas.entities.services.exception.ResourceFoundException;
+import com.pierre.dsvendas.entities.services.exception.ResourceNotFoundException;
 
 @ControllerAdvice
 public class ResourceExceptionHandler {
 
-    @ExceptionHandler(ResourceFoundException.class)
-    public ResponseEntity<StandarError> entityNotFound(ResourceFoundException e, HttpServletRequest request) {
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<StandarError> entityNotFound(ResourceNotFoundException e, HttpServletRequest request) {
        HttpStatus status = HttpStatus.NOT_FOUND;
         StandarError err = new StandarError();
         err.setTimestamp(Instant.now());

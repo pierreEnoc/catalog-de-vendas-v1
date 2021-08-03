@@ -2,20 +2,19 @@
 
 package com.pierre.dsvendas.test.servicetest;
 
-import com.amazonaws.services.workmailmessageflow.model.ResourceNotFoundException;
-import com.pierre.dsvendas.dto.ProductDTO;
-import com.pierre.dsvendas.entities.Product;
-import com.pierre.dsvendas.entities.services.ProductService;
-import com.pierre.dsvendas.entities.services.exception.DatabaseException;
-import com.pierre.dsvendas.entities.services.exception.ResourceFoundException;
-import com.pierre.dsvendas.repositories.ProductRepository;
-import com.pierre.dsvendas.test.factory.ProductFactory;
+import java.util.List;
+import java.util.Optional;
+
+import javax.persistence.EntityNotFoundException;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.*;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.mockito.ArgumentMatchers;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
@@ -23,12 +22,13 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import javax.persistence.EntityNotFoundException;
-
-import static org.hamcrest.CoreMatchers.any;
-
-import java.util.List;
-import java.util.Optional;
+import com.amazonaws.services.workmailmessageflow.model.ResourceNotFoundException;
+import com.pierre.dsvendas.dto.ProductDTO;
+import com.pierre.dsvendas.entities.Product;
+import com.pierre.dsvendas.entities.services.ProductService;
+import com.pierre.dsvendas.entities.services.exception.DatabaseException;
+import com.pierre.dsvendas.repositories.ProductRepository;
+import com.pierre.dsvendas.test.factory.ProductFactory;
 
 @ExtendWith(SpringExtension.class)
 //@SpringBootTest

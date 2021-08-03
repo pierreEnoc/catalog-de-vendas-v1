@@ -25,7 +25,7 @@ import com.pierre.dsvendas.dto.UserUpdateDTO;
 import com.pierre.dsvendas.entities.Role;
 import com.pierre.dsvendas.entities.User;
 import com.pierre.dsvendas.entities.services.exception.DatabaseException;
-import com.pierre.dsvendas.entities.services.exception.ResourceFoundException;
+import com.pierre.dsvendas.entities.services.exception.ResourceNotFoundException;
 import com.pierre.dsvendas.repositories.RoleRepository;
 import com.pierre.dsvendas.repositories.UserRepository;
 
@@ -52,7 +52,7 @@ public class UserService implements UserDetailsService {
 	@Transactional(readOnly = true)
 	public UserDTO findById(@PathVariable Long id) {
 		Optional<User> obj = userRepository.findById(id);
-		User entity = obj.orElseThrow(() -> new ResourceFoundException("Entity not found"));
+		User entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
 		return new UserDTO(entity);
 	}
 
@@ -73,7 +73,7 @@ public class UserService implements UserDetailsService {
 			return new UserDTO(entity);
 
 		} catch (EntityNotFoundException e) {
-			throw new ResourceFoundException("id not found " + id);
+			throw new ResourceNotFoundException("id not found " + id);
 		}
 	}
 
@@ -81,7 +81,7 @@ public class UserService implements UserDetailsService {
 		try {
 			userRepository.deleteById(id);
 		} catch (EmptyResultDataAccessException e) {
-			throw new ResourceFoundException("id not found " + id);
+			throw new ResourceNotFoundException("id not found " + id);
 
 		} catch (DataIntegrityViolationException e) {
 			throw new DatabaseException("Integrity violation");

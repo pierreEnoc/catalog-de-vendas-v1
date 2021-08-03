@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.pierre.dsvendas.dto.CategoryDTO;
 import com.pierre.dsvendas.entities.Category;
 import com.pierre.dsvendas.entities.services.exception.DatabaseException;
-import com.pierre.dsvendas.entities.services.exception.ResourceFoundException;
+import com.pierre.dsvendas.entities.services.exception.ResourceNotFoundException;
 import com.pierre.dsvendas.repositories.CategoryRepository;
 
 @Service
@@ -33,7 +33,7 @@ public class CategoryService {
     @Transactional(readOnly = true)
     public CategoryDTO findById(Long id) {
         Optional<Category> obj = categoryRepository.findById(id);
-        Category entity = obj.orElseThrow(() -> new ResourceFoundException("Entity not found"));
+        Category entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
         return new CategoryDTO(entity);
     }
     
@@ -54,7 +54,7 @@ public class CategoryService {
           entity = categoryRepository.save(entity);
           return new CategoryDTO(entity);
       }catch (EntityNotFoundException e) {
-       throw new ResourceFoundException("Id not found" + id);
+       throw new ResourceNotFoundException("Id not found" + id);
       }
     }
 
@@ -63,7 +63,7 @@ public class CategoryService {
             categoryRepository.deleteById(id);
         }
         catch (EmptyResultDataAccessException e) {
-            throw new ResourceFoundException("Id not found " + id);
+            throw new ResourceNotFoundException("Id not found " + id);
         }
         catch (DataIntegrityViolationException e) {
             throw new DatabaseException("Integrity violation");
