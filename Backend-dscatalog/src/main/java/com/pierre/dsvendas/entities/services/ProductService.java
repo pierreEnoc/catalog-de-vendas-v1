@@ -16,13 +16,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.amazonaws.services.workmailmessageflow.model.ResourceNotFoundException;
 import com.pierre.dsvendas.dto.CategoryDTO;
 import com.pierre.dsvendas.dto.ProductDTO;
 import com.pierre.dsvendas.dto.UriDTO;
 import com.pierre.dsvendas.entities.Category;
 import com.pierre.dsvendas.entities.Product;
-import com.pierre.dsvendas.entities.services.exception.DatabaseException;
+import com.pierre.dsvendas.entities.services.exceptions.DatabaseException;
+import com.pierre.dsvendas.entities.services.exceptions.ResourceNotFoundException;
 import com.pierre.dsvendas.repositories.CategoryRepository;
 import com.pierre.dsvendas.repositories.ProductRepository;
 

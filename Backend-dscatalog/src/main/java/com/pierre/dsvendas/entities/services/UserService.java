@@ -24,8 +24,8 @@ import com.pierre.dsvendas.dto.UserInsertDTO;
 import com.pierre.dsvendas.dto.UserUpdateDTO;
 import com.pierre.dsvendas.entities.Role;
 import com.pierre.dsvendas.entities.User;
-import com.pierre.dsvendas.entities.services.exception.DatabaseException;
-import com.pierre.dsvendas.entities.services.exception.ResourceNotFoundException;
+import com.pierre.dsvendas.entities.services.exceptions.DatabaseException;
+import com.pierre.dsvendas.entities.services.exceptions.ResourceNotFoundException;
 import com.pierre.dsvendas.repositories.RoleRepository;
 import com.pierre.dsvendas.repositories.UserRepository;
 

@@ -1,4 +1,4 @@
-package com.pierre.dsvendas.entities.services.exception;
+package com.pierre.dsvendas.entities.services.exceptions;
 
 public class DatabaseException extends RuntimeException {
     private static final long serialVersionUID = 1L;

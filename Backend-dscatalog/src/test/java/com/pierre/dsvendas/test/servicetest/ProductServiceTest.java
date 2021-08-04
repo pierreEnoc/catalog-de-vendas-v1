@@ -26,7 +26,7 @@ import com.amazonaws.services.workmailmessageflow.model.ResourceNotFoundExceptio
 import com.pierre.dsvendas.dto.ProductDTO;
 import com.pierre.dsvendas.entities.Product;
 import com.pierre.dsvendas.entities.services.ProductService;
-import com.pierre.dsvendas.entities.services.exception.DatabaseException;
+import com.pierre.dsvendas.entities.services.exceptions.DatabaseException;
 import com.pierre.dsvendas.repositories.ProductRepository;
 import com.pierre.dsvendas.test.factory.ProductFactory;
 

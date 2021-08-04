@@ -14,8 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.pierre.dsvendas.dto.CategoryDTO;
 import com.pierre.dsvendas.entities.Category;
-import com.pierre.dsvendas.entities.services.exception.DatabaseException;
-import com.pierre.dsvendas.entities.services.exception.ResourceNotFoundException;
+import com.pierre.dsvendas.entities.services.exceptions.DatabaseException;
+import com.pierre.dsvendas.entities.services.exceptions.ResourceNotFoundException;
+//import com.pierre.dsvendas.entities.services.exceptions.ResourceNotFoundException;
 import com.pierre.dsvendas.repositories.CategoryRepository;
 
 @Service
@@ -53,7 +54,9 @@ public class CategoryService {
           entity.setName(dto.getName());
           entity = categoryRepository.save(entity);
           return new CategoryDTO(entity);
-      }catch (EntityNotFoundException e) {
+          
+      }catch(EntityNotFoundException e) {
+    	  
        throw new ResourceNotFoundException("Id not found" + id);
       }
     }
